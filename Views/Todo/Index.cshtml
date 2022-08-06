@@ -1,0 +1,61 @@
+@model ListTodoViewModel
+
+<div class="row">
+    <div class="col text-center">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Tarefa</th>
+                    <th scope="col" class="text-center">Data</th>
+                    <th scope="col" class="text-center" >Concluído</th>
+                    <th scope="col" class="text-center" >Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var todo in Model.Todos)
+                {
+                    <tr>
+                        <td>@todo.Title</td>
+                        <td class="text-center">@todo.Date.ToString("dd/MM/yyy")</td>
+                        <td class="text-center">
+                           @if (todo.IsCompleted)
+                           {
+                            <i class="text-success" data-feather="check-square"></i>
+                           }else
+                           {
+                            <i class="text-danger" data-feather="x-square"></i>
+                           }
+                        </td>
+                        <td class="text-center">
+                            <a asp-controller="Todo"
+                              asp-action="ToComplete"
+                              asp-route-id="@todo.Id" onclick="return confirm('Tem certeza que deseja concluir esta tarefa?')" class="btn btn-sm btn-success @(todo.IsCompleted ? "disabled" : "")">Concluir</a>
+                            
+                            <a asp-controller="Todo"
+                              asp-action="Edit"
+                              asp-route-id="@todo.Id"  class="btn btn-sm btn-warning @(todo.IsCompleted ? "disabled" : "")">Editar</a>
+                            
+                            <a
+                              asp-controller="Todo"
+                              asp-action="Delete"
+                              asp-route-id="@todo.Id" onclick="return confirm('Tem certeza que deseja excluir esta tarefa?')" class="btn btn-sm btn-danger">Excluir
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <a asp-controller="Todo" asp-action="Create" class="btn btn-primary">Nova Tarefa</a>
+    </div>
+</div>
